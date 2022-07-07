@@ -1,6 +1,7 @@
 package com.Pages;
 
 import com.Base.BasePage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,56 +14,65 @@ public class RegisterPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(id = "input-firstname")
+    @FindBy(id = "customer.firstName")
     public WebElement nameInput;
 
-    @FindBy(id = "input-lastname")
+    @FindBy(id = "customer.lastName")
     public WebElement lastNameInput;
 
-    @FindBy(id = "input-email")
-    public WebElement emailInput;
+    @FindBy(id = "customer.address.street")
+    public WebElement addressInput;
 
-    @FindBy(id = "input-telephone")
-    public WebElement telephoneInput;
+    @FindBy(id = "customer.address.city")
+    public WebElement cityInput;
 
-    @FindBy(id = "input-password")
+    @FindBy(id = "customer.address.state")
+    public WebElement stateInput;
+
+    @FindBy(id = "customer.address.zipCode")
+    public WebElement zipCodeInput;
+
+    @FindBy(id = "customer.phoneNumber")
+    public WebElement phoneInput;
+
+    @FindBy(id = "customer.ssn")
+    public WebElement ssnInput;
+
+    @FindBy(id = "customer.username")
+    public WebElement usernameInput;
+
+    @FindBy(id = "customer.password")
     public WebElement passwordInput;
 
-    @FindBy(id = "input-confirm")
+    @FindBy(id = "repeatedPassword")
     public WebElement confirmInput;
 
-    @FindBy(xpath = "//*[@id=\"content\"]/form/fieldset[3]/div/div/label[2]/input")
-    public WebElement buttonNo;
+    @FindBy(xpath = "//input[@value='Register']")
+    public WebElement registrar;
 
-    @FindBy(xpath = "//*[@id=\"content\"]/form/div/div/input[1]")
-    public WebElement acceptFlag;
-
-    @FindBy(xpath = "//*[@id=\"content\"]/form/div/div/input[2]")
-    public WebElement buttonContinue;
-
-    @FindBy(xpath = "//*[@id=\"content\"]/p[1]")
+    @FindBy(xpath = "//*[@id=\"rightPanel\"]/p[1]")
     public WebElement success;
 
-    public void fillFields(String name, String lastName, String email, String telephone, String password,
-            String confirm) {
-        nameInput.clear();
-        lastNameInput.clear();
-        emailInput.clear();
-        telephoneInput.clear();
-        passwordInput.clear();
-        confirmInput.clear();
-        nameInput.sendKeys(name);
-        lastNameInput.sendKeys(lastName);
-        emailInput.sendKeys(email);
-        telephoneInput.sendKeys(telephone);
-        passwordInput.sendKeys(password);
-        confirmInput.sendKeys(confirm);
+
+    public void fillFields(String firstName, String lastName, String address, String city,
+                           String state, String zipCode, String phone, String ssn,
+                           String username, String password, String confirm) {
+
+        setInputField(nameInput, firstName);
+        setInputField(lastNameInput,lastName);
+        setInputField(addressInput,address);
+        setInputField(cityInput,city);
+        setInputField(stateInput,state);
+        setInputField(zipCodeInput,zipCode);
+        setInputField(phoneInput,phone);
+        setInputField(ssnInput,ssn);
+        setInputField(usernameInput,username);
+        setInputField(passwordInput,password);
+        setInputField(confirmInput,confirm);
     }
 
-    public void clickNoAndFlagAndContinue() {
-        buttonNo.click();
-        acceptFlag.click();
-        buttonContinue.click();
+    public void clickRegister() {
+        registrar.click();
     }
 
     public String success() {
