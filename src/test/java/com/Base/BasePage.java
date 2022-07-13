@@ -22,7 +22,6 @@ public class BasePage {
     private String URL; // * URL de la pagina
     private static final String logoImgXPath = "//a[@class='logo-img']";
 
-
     public BasePage(WebDriver driver, String URL) {
         this.driver = driver;
         this.URL = URL;
@@ -38,6 +37,10 @@ public class BasePage {
 
     protected void waitForElementToAppear(By locator) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    protected void waitForElementToBeClickable(By locator) {
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     public String getTitlePage() {
@@ -74,7 +77,7 @@ public class BasePage {
         new FluentWait<WebDriver>(driver)
                 .withTimeout(Duration.ofSeconds(60))
                 .pollingEvery(Duration.ofMillis(10))
-                .until(d -> (select.getOptions().size() > 1));
+                .until(d -> (select.getOptions().size() > 0 && select.getFirstSelectedOption().getText() != "undefined"));
     }
 
     public HomePage goToHomePageHeader()

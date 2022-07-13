@@ -7,9 +7,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="parcial-master" />
         <module name="Template" />
+        <module name="final-testing-ii" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="final-testing-ii" target="18" />
+    </bytecodeTargetLevel>
   </component>
 </project>

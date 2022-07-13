@@ -22,16 +22,18 @@ public class HomePage extends BasePage {
     public WebElement passwordInput;
 
     @FindBy(xpath = "//*[@id=\"loginPanel\"]/form[1]/div[3]/input[1]")
-    public WebElement loginInput;
+    public WebElement buttonLogin;
 
     @FindBy(xpath = "//*[@id=\"loginPanel\"]/p[2]/a[1]")
     public WebElement buttonRegister;
 
-  //  @FindBy(xpath = "//*[@id=\"loginPanel\"]/p[2]/a[1]")
-   //public WebElement buttonRegister;
 
     public void clickRegister() {
         buttonRegister.click();
+    }
+
+    public void clickLogin() {
+        buttonLogin.click();
     }
 
     public void quit() {
@@ -42,6 +44,8 @@ public class HomePage extends BasePage {
         waitForElementToAppear(By.xpath("//*[@id=\"loginPanel\"]/form[1]/div[1]/input[1]"));
         setInputField(usernameInput,username);
         waitForElementToAppear(By.xpath("//*[@id=\"loginPanel\"]/form[1]/div[2]/input[1]"));
-        setInputField(passwordInput,password + Keys.ENTER);
+        setInputField(passwordInput,password);
+        //+ Keys.ENTER);
+        clickLogin();
     }
 }

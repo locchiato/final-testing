@@ -19,7 +19,7 @@ public class TransferPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(xpath = "//*[@id=\"rightPanel\"]/div[1]/div[1]/h1[1]")
+    @FindBy(css = ".title")
     public WebElement title;
 
     @FindBy(id = "amount")
@@ -32,19 +32,20 @@ public class TransferPage extends BasePage {
     public WebElement toAccount;
 
     public void fillFields(String amount){
-        setInputField(this.amount, amount);
 
         waitForElementToAppear(By.id("fromAccountId"));
-        waitForElementToAppear(By.id("toAccountId"));
         Select selectFrom = new Select(this.fromAccount);
+        waitForElementToAppear(By.id("toAccountId"));
         Select selectTo = new Select(this.toAccount);
 
         waitUntilSelectOptionsPopulated(selectFrom);
         waitUntilSelectOptionsPopulated(selectTo);
-        selectFrom.selectByIndex(1);
-        selectTo.selectByIndex(2);
 
+        selectFrom.selectByIndex(0);
+        selectTo.selectByIndex(1);
+        setInputField(this.amount, amount + Keys.ENTER);
 
+        while(getDriver().findElement(By.cssSelector(".title")).getText() == "Transfer Funds");
     }
     public String getText() {
         return title.getText();

@@ -1,42 +1,27 @@
 package com.Tests;
 
 import com.Base.BaseTest;
-import com.Pages.HomePage;
-import com.Pages.OpenAccountPage;
-import com.Pages.OverviewPage;
-import com.Pages.TransferPage;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.By;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AccountServicesTest extends BaseTest {
 
-	private static HomePage homePage;
-	private static OverviewPage overviewPage;
-	private static OpenAccountPage openAccountPage;
-	private static TransferPage transferPage;
-	private static final String USERNAME = "ruser1";
-	private static final String PASSWORD = "123ari";
-
-	@BeforeAll
-	static void initTest() {
-		WebDriverManager.chromedriver().setup();
-		ChromeDriver driver = new ChromeDriver();
-		homePage = new HomePage(driver, "https://parabank.parasoft.com/parabank/index.htm");
-		overviewPage = new OverviewPage(driver, "https://parabank.parasoft.com/parabank/overview.htm");
-		openAccountPage = new OpenAccountPage(driver, "https://parabank.parasoft.com/parabank/openaccount.htm");
-		transferPage = new TransferPage(driver, "https://parabank.parasoft.com/parabank/transfer.htm");
-	}
+	private String openNewAccountMessage = "Congratulations, your account is now open";
+	private String generalViewAccountMessage = "Balance includes deposits that may be subject to holds";
+	private String transferFundsFirstMessage = "Transfer Funds";
+	private String transferFundsSecondMessage = "Transfer Complete!";
+	private String accountActivityMessage = "Account Details";
 
 	@BeforeEach
 	void login(){
-		doLogin();
+		homePage.loginUser(USERNAME, PASSWORD);
 	}
 
 
 	@Test
 	@Order(1)
+	@Tag("Smoke")
 	@DisplayName("Apertura de una nueva cuenta")
 	public void openNewAccount() {
 
@@ -46,38 +31,42 @@ class AccountServicesTest extends BaseTest {
 		openAccountPage.selectAccount();
 		openAccountPage.clickOpenNewAccount();
 
-		Assertions.assertTrue(openAccountPage.success().contains("your account is now open."));
+		Assertions.assertTrue(openAccountPage.success().contains(openNewAccountMessage));
 	}
 
 
 	@Test
 	@Order(2)
+	@Tag("Regression")
 	@DisplayName("Visión general de la cuenta")
 	public void generalViewAccount() {
-		Assertions.assertTrue(overviewPage.message().contains("*Balance includes deposits that may be subject to holds"));
+		Assertions.assertTrue(overviewPage.message().contains(generalViewAccountMessage));
 	}
 
 
 	@Test
 	@Order(3)
+	@Tag("Smoke")
 	@DisplayName("Transferencia de fondos")
-	public void transfer() {
+	public void transferFunds() {
 		overviewPage.clickTransferFunds();
 
-		Assertions.assertTrue(transferPage.getText().contains("Transfer Funds"));
+		Assertions.assertTrue(transferPage.getText().contains(transferFundsFirstMessage));
 
-		transferPage.fillFields("300");
-		//transferPage.fillFields("300", "61296", "61629");
+		transferPage.fillFields("200");
 
-
-		Assertions.assertTrue(transferPage.getText().contains("Transfer Complete!"));
+		Assertions.assertTrue(transferPage.getText().contains(transferFundsSecondMessage));
 	}
 
 	@Test
 	@Order(4)
+	@Tag("Smoke")
 	@DisplayName("Actividad de la cuenta")
 	public void accountActivity() {
-		Assertions.assertTrue(true);//openAccountPage.success().contains("your account is now open."));
+
+		Assertions.assertTrue(overviewPage.goToAccountDetail().contains(accountActivityMessage));
+		overviewPage.checkActivity();
+
 	}
 
 	@AfterAll
@@ -85,10 +74,5 @@ class AccountServicesTest extends BaseTest {
 		homePage.quit();
 	}
 
-
-	private void doLogin() {
-		homePage.loginUser(USERNAME
-				, PASSWORD);
-	}
 
 }

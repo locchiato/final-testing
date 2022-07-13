@@ -76,6 +76,7 @@ public class RegisterPage extends BasePage {
     }
 
     public String success() {
+        waitForElementToAppear(By.xpath("//*[@id=\"rightPanel\"]/p[1]"));
         return success.getText();
     }
 }
